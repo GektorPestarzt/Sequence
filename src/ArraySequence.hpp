@@ -26,24 +26,23 @@ public:
     ~array_sequence() {}
 
 public:
-	inline int get_size() const noexcept override { return this->data->get_size(); }
+	int get_size() const noexcept override { return this->data->get_size(); }
 
-    inline bool empty() const noexcept override { return this->data->get_size() == 0; }
+    bool empty() const noexcept override { return this->data->get_size() == 0; }
 
-    inline T& get(std::size_t index) const override {
-        assert(index >= 0);
+    T& get(std::size_t index) const override {
         assert(index < this->data->get_size());
 
 		return this->data->get(index);
 	}
 
-    inline T& get_last() const override {
+    T& get_last() const override {
         assert(!this->empty());
 
         return this->data->get(this->data->get_size() - 1);
     }
 
-    inline T& get_first() const override {
+    T& get_first() const override {
         assert(!this->empty());
 
         return this->data->get(0);
@@ -90,14 +89,12 @@ public:
     }
 
 	void insert(const T& item, std::size_t index) override {
-        assert(index >= 0);
         assert(index < this->data->get_size());
 
 		this->data->set(item, index);
 	}
 
 	T& operator[](std::size_t index) {
-        assert(index >= 0);
         assert(index < this->data->get_size());
 
 		return this->data->get(index);

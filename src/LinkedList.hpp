@@ -1,45 +1,31 @@
+#ifndef SRC_LINKEDLIST_HPP_
+#define SRC_LINKEDLIST_HPP_
+
 #include <iostream>
 
-using namespace std;
+template<typename T>
+struct node {
+	T data;
+	node* next;
 
-template<class T>
-class LinkedList
-{
-public:
-	class Data
-	{
-	public:
-		T data;
-		Data* next{ nullptr };
+		node(const T& _item, node _next) : data(_item), next(_next) {}
+};
 
-	public:
-		Data(T _item) : data(_item) {}
-	};
-
-
+template<typename T>
+class linked_list {
 private:
-	LinkedList<T>::Data* head {nullptr};
-	LinkedList<T>::Data* tail {nullptr};
-	int size {0};
+	node* head;
+	node* tail;
+	std::size_t size;
 
 public:
-	LinkedList() : size(1)
-	{
-		LinkedList<T>::Data* tmp = new LinkedList<T>::Data;
-
-		this->head = tmp;
-		this->tail = tmp;
-	}
-
-	LinkedList(T* items, int count) : size(count)
-	{
-		LinkedList<T>::Data* tmp {nullptr};
-		LinkedList<T>::Data* prev = new LinkedList<T>::Data(items[0]);
+	linked_list(const T* const items, std::size_t count) noexcept : size(count) {
+		node<T>* tmp {nullptr};
+		node<T>* prev = new node<T>(items[0]);
 		this->head = prev;
 
-		for (int i = 1; i < count; i++)
-		{
-			tmp = new LinkedList<T>::Data(items[i]);
+		for (std::size_t i = 1; i < count; ++i) {
+			tmp = new node<T>(items[i], nullptr);
 
 			prev->next = tmp;
 			prev = tmp;
@@ -48,19 +34,17 @@ public:
 		this->tail = tmp;
 	}
 	
-	LinkedList(LinkedList<T>* list) : size(list->size) //ERROR if size = 0; head = tail = nullptr
+	linked_list(linked_list<T>* list) : size(list->size) //ERROR if size = 0; head = tail = nullptr
 	{
-		LinkedList<T>::Data* oldList = list->head;
-		LinkedList<T>::Data* tmp {nullptr};
-		LinkedList<T>::Data* prev = new LinkedList<T>::Data(oldList->data);
+		node<T>* oldList = list->head;
+		node<T>* tmp {nullptr};
+		node<T>* prev = new node<T>(oldList->data);
 		this->head = prev;
 
 		oldList = oldList->next;
 
-		int i;
-		for (i = 1; i < list->size; i++)
-		{
-			tmp = new LinkedList<T>::Data(oldList->data);
+		for (std::size_t i = 1; i < list->size; ++i) {
+			tmp = new node<T>(oldList->data);
 			prev->next = tmp;
 
 			prev = tmp;
@@ -70,21 +54,19 @@ public:
 		this->tail = tmp;
 	}
 
-	~LinkedList()
-	{
+	~LinkedList() {
 		auto tmp = this->head;
-		auto nextOne = tmp->next;
-		for (int i = 0; i < size; i++)
-		{
+		auto next_one = tmp->next;
+
+		for (std::size_t i = 0; i < size; ++i) {
 			delete tmp;
-			tmp = nextOne;
-			nextOne = nextOne->next;
+			tmp = next_one;
+			next_one = next_one->next;
 		}
 	}
 
 public:
-	T& GetFirst()
-	{
+	T& get_first() {
 		if (this->head == nullptr)
 			throw exception("Nullptr");
 
@@ -295,4 +277,4 @@ public:
 	}
 };
 
-//HEHE
+#endif  // SRC_LINKEDLIST_HPP_
