@@ -9,8 +9,8 @@ public:
 	virtual int get_size() const noexcept = 0;
     virtual bool empty() const noexcept = 0;
 
-    virtual T& get_first() const = 0;
-    virtual T& get_last() const = 0;
+    virtual T get_first() const = 0;
+    virtual T get_last() const = 0;
     virtual T& get(std::size_t) const = 0;
 
 	virtual void push_back(const T&) noexcept = 0;

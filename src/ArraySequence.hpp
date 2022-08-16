@@ -36,13 +36,13 @@ public:
 		return this->data->get(index);
 	}
 
-    T& get_last() const override {
+    T get_last() const override {
         assert(!this->empty());
 
         return this->data->get(this->data->get_size() - 1);
     }
 
-    T& get_first() const override {
+    T get_first() const override {
         assert(!this->empty());
 
         return this->data->get(0);
