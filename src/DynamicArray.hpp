@@ -15,31 +15,19 @@ public:
     ~dynamic_array() { delete[] array; }
 
 public:
-	T& get(std::size_t index) {
-		return this->array[index];
-	}
+	inline T& get(std::size_t index) const noexcept { return this->array[index]; }
 
-	std::size_t get_size() {
-		return this->size;
-	}
+	inline std::size_t get_size() const noexcept { return this->size; }
 
-	std::size_t get_capacity() {
-		return this->capacity;
-	}
+	inline std::size_t get_capacity() const noexcept { return this->capacity; }
 
-	void set_capacity(std::size_t capacity) {
-		this->capacity = capacity;
-	}
+	inline void set_capacity(std::size_t capacity) noexcept { this->capacity = capacity; }
 
-    void set_size(std::size_t size) {
-        this->size = size;
-    }
+    inline void set_size(std::size_t size) noexcept { this->size = size; }
 
-	void set(const T& value, std::size_t index) {
-		this->array[index] = value;
-	}
+	inline void set(const T& value, std::size_t index) noexcept { this->array[index] = value; }
 
-	void resize(std::size_t new_capacity) {
+	void resize(std::size_t new_capacity) noexcept {
 		auto new_array = new T[new_capacity];
 
 		for (std::size_t i = 0; i < new_capacity && i < this->size; i++)

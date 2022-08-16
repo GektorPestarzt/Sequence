@@ -1,8 +1,7 @@
 #include <iostream>
 
 template <class T>
-class sequence
-{
+class sequence {
 public:
 	virtual inline int get_size() const noexcept = 0;
     virtual inline bool empty() const noexcept = 0;
