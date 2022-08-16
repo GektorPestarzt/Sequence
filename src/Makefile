@@ -1,5 +1,5 @@
 CC=g++
-FLAGS=-std=c++17 -Wall -Werror -Wextra
+FLAGS=-std=c++17 -Wall -Werror -Wextra -fsanitize=address
 
 all: array_sequence
 

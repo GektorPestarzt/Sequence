@@ -10,5 +10,6 @@ int main() {
     std::cout << array->get_first() << " " << array->get_last();
 
     std::cout << std::endl;
+    delete array;
     return 0;
 }

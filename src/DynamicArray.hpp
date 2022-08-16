@@ -36,6 +36,7 @@ public:
 		for (std::size_t i = 0; i < new_capacity && i < this->size; i++)
 			new_array[i] = this->array[i];
 
+        delete[] this->array;
 		this->array = std::move(new_array);
 		this->capacity = std::move(new_capacity);
 		if (new_capacity < this->size) this->size = std::move(new_capacity);

@@ -6,7 +6,7 @@
 template <class T>
 class sequence {
 public:
-	virtual int get_size() const noexcept = 0;
+	virtual std::size_t get_size() const noexcept = 0;
     virtual bool empty() const noexcept = 0;
 
     virtual T get_first() const = 0;
@@ -19,6 +19,8 @@ public:
 	virtual void append(const T&) noexcept = 0;
     virtual void prepend(const T&) noexcept = 0;
     virtual void insert(const T&, std::size_t) = 0;
+
+    virtual ~sequence() noexcept {}
 };
 
 #endif  // SRC_SEQUENCE_HPP_

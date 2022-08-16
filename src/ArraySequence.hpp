@@ -23,10 +23,10 @@ public:
 	array_sequence(T* items, std::size_t size) noexcept
         : data(new dynamic_array<T>(items, size, min_capacity(size * 2))) {}
 
-    ~array_sequence() {}
+    ~array_sequence() noexcept { delete data; }
 
 public:
-	int get_size() const noexcept override { return this->data->get_size(); }
+	std::size_t get_size() const noexcept override { return this->data->get_size(); }
 
     bool empty() const noexcept override { return this->data->get_size() == 0; }
 
