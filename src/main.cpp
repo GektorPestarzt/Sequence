@@ -3,11 +3,13 @@
 
 int main() {
     auto array = new array_sequence<int>();
-    array->push_back(100);
-    array->push_back(101);
-    array->push_back(102);
 
-    std::cout << array->get_first() << " " << array->get_last();
+    // array->insert(0, 0);
+    for (std::size_t i = 0; i < 200; ++i) array->prepend(i);
+
+    for (std::size_t i = 0; i < 200; ++i) array->erase(0);
+
+    for (std::size_t i = 0; i < array->get_size(); ++i) std::cout << array->get(i) << " ";
 
     std::cout << std::endl;
     delete array;

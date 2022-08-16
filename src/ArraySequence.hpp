@@ -80,18 +80,49 @@ public:
         if (size == capacity)
             this->data->resize(capacity * 2);
 
-        for (std::size_t i = size - 1; i > 0; --i)
-            this->data->set(this->data->get(i), i + 1);
+        if (size != 0) {
+            for (std::size_t i = size - 1; i > 0; --i)
+                this->data->set(this->data->get(i), i + 1);
+        }
 
         this->data->set(this->data->get(0), 1);
         this->data->set(item, 0);
-        this->data->set_size(size + 1);
+        this->data->set_size(++size);
     }
 
 	void insert(const T& item, std::size_t index) override {
-        assert(index < this->data->get_size());
+        std::size_t size = this->data->get_size();
+        std::size_t capacity = this->data->get_capacity();
+
+        assert(index <= size);
+
+        if (size == capacity)
+            this->data->resize(capacity * 2);
+
+        if (size != 0) {
+            for (std::size_t i = size - 1; i >= index; --i) {
+                this->data->set(this->data->get(i), i + 1);
+                if (i == 0) break;
+            }
+        }
 
 		this->data->set(item, index);
+        this->data->set_size(++size);
+	}
+
+    void erase(std::size_t index) override {
+        std::size_t size = this->data->get_size();
+        std::size_t capacity = this->data->get_capacity();
+
+        assert(index < size);
+
+        for (std::size_t i = index + 1; i <= size; ++i)
+            this->data->set(this->data->get(i), i - 1);
+
+        this->data->set_size(size - 1);
+
+        if (size * 3 < capacity && capacity > MIN_CAPACITY)
+			this->data->resize(min_capacity(capacity / 2));
 	}
 
 	T& operator[](std::size_t index) {

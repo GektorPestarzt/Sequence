@@ -19,6 +19,7 @@ public:
 	virtual void append(const T&) noexcept = 0;
     virtual void prepend(const T&) noexcept = 0;
     virtual void insert(const T&, std::size_t) = 0;
+    virtual void erase(std::size_t) = 0;
 
     virtual ~sequence() noexcept {}
 };
