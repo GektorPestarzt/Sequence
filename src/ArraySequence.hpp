@@ -1,3 +1,6 @@
+#ifndef SRC_ARRAYSEQUENCE_HPP_
+#define SRC_ARRAYSEQUENCE_HPP_
+
 #include <iostream>
 #include <assert.h>
 
@@ -103,3 +106,5 @@ public:
 private:
 	dynamic_array<T>* data;
 };
+
+#endif  // SRC_ARRAYSEQUENCE_HPP_

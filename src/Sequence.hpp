@@ -1,3 +1,6 @@
+#ifndef SRC_SEQUENCE_HPP_
+#define SRC_SEQUENCE_HPP_
+
 #include <iostream>
 
 template <class T>
@@ -17,3 +20,5 @@ public:
     virtual void prepend(const T&) noexcept = 0;
     virtual void insert(const T&, std::size_t) = 0;
 };
+
+#endif  // SRC_SEQUENCE_HPP_

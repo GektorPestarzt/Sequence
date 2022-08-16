@@ -1,3 +1,6 @@
+#ifndef SRC_DYNAMICARRAY_HPP_
+#define SRC_DYNAMICARRAY_HPP_
+
 #include <iostream>
 
 template <class T>
@@ -43,3 +46,5 @@ private:
 	std::size_t size = 0;
 	std::size_t capacity = 0;
 };
+
+#endif  // SRC_DYNAMICARRAY_HPP_
