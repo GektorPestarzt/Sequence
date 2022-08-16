@@ -35,7 +35,7 @@ public:
         this->size = size;
     }
 
-	void set(const std::size_t& index, const T& value) {
+	void set(const T& value, const std::size_t& index) {
 		this->array[index] = value;
 	}
 

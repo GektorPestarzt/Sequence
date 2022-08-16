@@ -23,6 +23,7 @@ public:
 
 public:
 	int get_size() override { return this->data->get_size(); }
+
     bool empty() override { return this->data->get_size() == 0; }
 
     T& get(const std::size_t& index) override {
@@ -51,7 +52,7 @@ public:
 		if (size == capacity)
             this->data->resize(capacity * 2);
 
-		this->data->set(size, item);
+		this->data->set(item, size);
 		this->data->set_size(size + 1);
 	}
 
@@ -67,9 +68,7 @@ public:
 			this->data->resize(min_capacity(capacity / 2));
 	}
 
-    void append(const T& item) override {
-        push_back(item);
-    }
+    void append(const T& item) override { push_back(item); }
 
     void prepend(const T& item) {
         std::size_t size = this->data->get_size();
@@ -78,9 +77,10 @@ public:
         if (size == capacity)
             this->data->resize(capacity * 2);
 
-        for (std::size_t i = size - 1; i >= 0; --i)
+        for (std::size_t i = size - 1; i > 0; --i)
             this->data->set(this->data->get(i), i + 1);
 
+        this->data->set(this->data->get(0), 1);
         this->data->set(item, 0);
         this->data->set_size(size + 1);
     }
@@ -89,7 +89,7 @@ public:
         assert(index >= 0);
         assert(index < this->data->get_size());
 
-		this->data->set(index, item);
+		this->data->set(item, index);
 	}
 
 	T& operator[](const std::size_t& index) {
