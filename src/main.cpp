@@ -2,10 +2,18 @@
 #include "ArraySequence.hpp"
 
 int main() {
-    int static_data[5] = {1, 2, 3, 4, 5};
-    int *data = new int[5];
-    std::copy(static_data, static_data + 5, data);
+    // int data[1] = {1};
+    auto array = new array_sequence<int>();
+    // (*array)[0] = 0;
 
-    auto array = new array_sequence<int>(data, 5);
+    for (int i = 1; i < 15; ++i) {
+        array->push_back(i);
+        // std::cout << array->get_size() << ' ';
+    }
+
+    for (int i = 0; i < 14; ++i) {
+        std::cout << array->get(i) << '-';
+    }
+
     return 0;
 }

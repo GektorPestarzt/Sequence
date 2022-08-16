@@ -1,14 +1,16 @@
 #include <iostream>
 
 template <class T>
-class dynamic_array
-{
+class dynamic_array {
 public:
 	dynamic_array() : array(new T[10]), size(0), capacity(10) {}
 	
     dynamic_array(std::size_t size) : size(size), array(new T[size]) {}
 	
-    dynamic_array(T* items, std::size_t _size, std::size_t _capacity) : array(items), size(_size), capacity(_capacity) {}
+    dynamic_array(T* items, std::size_t _size, std::size_t _capacity)
+        : array(new T[_capacity]), size(_size), capacity(_capacity) {
+        std::copy(items, items + _size, array);
+    }
 	
     ~dynamic_array() { delete[] array; }
 
@@ -26,36 +28,21 @@ public:
 	}
 
 	void set_capacity(const std::size_t& capacity) {
-        /*
-		if (capacity < 0)
-			throw exception("Negative length");
-
-		if (capacity > this->size)
-			throw exception("Length can't be less than size");
-        */
 		this->capacity = capacity;
 	}
 
-	void set(const std::size_t& index, const T& value) {
-        /*
-		if (index < 0)
-			throw exception("Negative index");
+    void set_size(const std::size_t& size) {
+        this->size = size;
+    }
 
-		if (index >= this->size)
-			throw exception("Index is out of range");
-        */
-	
+	void set(const std::size_t& index, const T& value) {
 		this->array[index] = value;
 	}
 
 	void resize(const std::size_t& new_capacity) {
-        /*
-		if (newSize <= 0)
-			throw exception("Negative or zero size");
-        */
 		auto new_array = new T[new_capacity];
 
-		for (std::size_t i = 0; i < new_capacity || i < this->size; i++)
+		for (std::size_t i = 0; i < new_capacity && i < this->size; i++)
 			new_array[i] = this->array[i];
 
 		this->array = std::move(new_array);

@@ -1,72 +1,104 @@
 #include <iostream>
+#include <assert.h>
+
 #include "DynamicArray.hpp"
 #include "Sequence.hpp"
 
-using namespace std;
+#define MIN_CAPACITY 10
 
 template <class T>
-class array_sequence: public sequence<T>
-{
+class array_sequence: public sequence<T> {
 private:
-	dynamic_array<T>* data;
+    std::size_t min_capacity(const std::size_t& capacity) {
+        return capacity < MIN_CAPACITY ? MIN_CAPACITY : capacity;
+    }
 
 public:
-	array_sequence() : data(nullptr) {}
+	array_sequence() : data(new dynamic_array<T>()) {}
 
-	array_sequence(T* items, std::size_t length) : data(new dynamic_array<T>(items, length, 2 * length)) {}
+	array_sequence(T* items, std::size_t size)
+        : data(new dynamic_array<T>(items, size, min_capacity(size * 2))) {}
 
     ~array_sequence() {}
 
 public:
-	T& get(const std::size_t& index) override {
+	int get_size() override { return this->data->get_size(); }
+    bool empty() override { return this->data->get_size() == 0; }
+
+    T& get(const std::size_t& index) override {
+        assert(index >= 0);
+        assert(index < this->data->get_size());
+
 		return this->data->get(index);
 	}
 
-	int get_length() override {
-		return this->data->get_size();
+    T& get_last() override {
+        assert(!this->empty());
+
+        return this->data->get(this->data->get_size() - 1);
+    }
+
+    T& get_first() override {
+        assert(!this->empty());
+
+        return this->data->get(0);
+    }
+
+	void push_back(const T& item) override {
+        std::size_t size = this->data->get_size();
+        std::size_t capacity = this->data->get_capacity();
+
+		if (size == capacity)
+            this->data->resize(capacity * 2);
+
+		this->data->set(size, item);
+		this->data->set_size(size + 1);
 	}
 
-	void push(const T& item) override {
-		if (this->data->get_size() == this->data->get_capacity())
-			this->data->resize(this->data->get_capacity() * 2);
+	void pop_back() override {
+        assert(!this->empty());
 
-		this->data->set(this->data->get_size(), item);
-		this->data->set_size(this->data->get_size() + 1);
+        std::size_t size = this->data->get_size();
+        std::size_t capacity = this->data->get_capacity();
+
+		this->data->set_size(size - 1);
+
+		if (size * 3 < capacity && capacity > MIN_CAPACITY)
+			this->data->resize(min_capacity(capacity / 2));
 	}
 
-	void set(const std::size_t& index, const T& item) override {
-        if (index < 0)
-            throw exception("Negative index");
+    void append(const T& item) override {
+        push_back(item);
+    }
 
-        if (index >= this->size)
-            throw exception("Index is out of range");
+    void prepend(const T& item) {
+        std::size_t size = this->data->get_size();
+        std::size_t capacity = this->data->get_capacity();
 
-		this->data->Set(index, item);
-	}
+        if (size == capacity)
+            this->data->resize(capacity * 2);
 
-	void pop(const std::size_t& index) override {
-        if (index < 0)
-            throw exception("Negative index");
+        for (std::size_t i = size - 1; i >= 0; --i)
+            this->data->set(this->data->get(i), i + 1);
 
-        if (index >= this->size)
-            throw exception("Index is out of range");
+        this->data->set(item, 0);
+        this->data->set_size(size + 1);
+    }
 
-		for (int i = index; i < this->data->get_capacity() - 1; i++)
-			this->data->set(i, this->data->get(i + 1));
+	void insert(const T& item, const std::size_t& index) override {
+        assert(index >= 0);
+        assert(index < this->data->get_size());
 
-		this->data->set_capacity(this->data->get_capacity() - 1);
-
-		if (this->data->get_capacity() * 3 < this->data->get_size())
-			this->data->resize(this->data->get_size() / 2);
+		this->data->set(index, item);
 	}
 
 	T& operator[](const std::size_t& index) {
-        if (index < 0)
-            throw exception("Negative index");
-
-        if (index >= this->size)
-            throw exception("Index is out of range");
+        assert(index >= 0);
+        assert(index < this->data->get_size());
 
 		return this->data->get(index);
 	}
+
+private:
+	dynamic_array<T>* data;
 };
