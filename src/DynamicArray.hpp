@@ -15,7 +15,7 @@ public:
     ~dynamic_array() { delete[] array; }
 
 public:
-	T& get(const std::size_t& index) {
+	T& get(std::size_t index) {
 		return this->array[index];
 	}
 
@@ -27,19 +27,19 @@ public:
 		return this->capacity;
 	}
 
-	void set_capacity(const std::size_t& capacity) {
+	void set_capacity(std::size_t capacity) {
 		this->capacity = capacity;
 	}
 
-    void set_size(const std::size_t& size) {
+    void set_size(std::size_t size) {
         this->size = size;
     }
 
-	void set(const T& value, const std::size_t& index) {
+	void set(const T& value, std::size_t index) {
 		this->array[index] = value;
 	}
 
-	void resize(const std::size_t& new_capacity) {
+	void resize(std::size_t new_capacity) {
 		auto new_array = new T[new_capacity];
 
 		for (std::size_t i = 0; i < new_capacity && i < this->size; i++)
