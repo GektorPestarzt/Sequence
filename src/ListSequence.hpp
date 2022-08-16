@@ -1,3 +1,6 @@
+#ifndef SRC_LISTSEQUENCE_HPP_
+#define SRC_LISTSEQUENCE_HPP_
+
 #include <iostream>
 #include "LinkedList.h"
 #include "Sequence.h"
@@ -45,4 +48,4 @@ public:
 	}
 };
 
-//HEHE
+#endif  // SRC_LISTSEQUENCE_HPP_

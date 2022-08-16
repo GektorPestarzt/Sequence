@@ -2,13 +2,14 @@
 #define SRC_LINKEDLIST_HPP_
 
 #include <iostream>
+#include <assert.h>
 
 template<typename T>
 struct node {
 	T data;
 	node* next;
 
-		node(const T& _item, node _next) : data(_item), next(_next) {}
+		node(const T& _item, node _next = nullptr) : data(_item), next(_next) {}
 };
 
 template<typename T>
@@ -19,13 +20,13 @@ private:
 	std::size_t size;
 
 public:
-	linked_list(const T* const items, std::size_t count) noexcept : size(count) {
+	linked_list(const T* const items, std::size_t _size) noexcept : size(_size) {
 		node<T>* tmp {nullptr};
 		node<T>* prev = new node<T>(items[0]);
 		this->head = prev;
 
-		for (std::size_t i = 1; i < count; ++i) {
-			tmp = new node<T>(items[i], nullptr);
+		for (std::size_t i = 1; i < _size; ++i) {
+			tmp = new node<T>(items[i]);
 
 			prev->next = tmp;
 			prev = tmp;
@@ -34,8 +35,7 @@ public:
 		this->tail = tmp;
 	}
 	
-	linked_list(linked_list<T>* list) : size(list->size) //ERROR if size = 0; head = tail = nullptr
-	{
+	linked_list(linked_list<T>* list) : size(list->size) { //ERROR if size = 0; head = tail = nullptr
 		node<T>* oldList = list->head;
 		node<T>* tmp {nullptr};
 		node<T>* prev = new node<T>(oldList->data);
@@ -66,134 +66,36 @@ public:
 	}
 
 public:
-	T& get_first() {
-		if (this->head == nullptr)
-			throw exception("Nullptr");
+    std::size_t get_size() const noexcept { return this->size; }
 
-		return this->head->data;
-	}
+    bool empty() const noexcept { return thie->head == nullptr; }
 
-	T& GetLast()
-	{
-		if (this->tail == nullptr)
-			throw exception("Nullptr");
+	T& get(std::size_t index) const noexcept {
+		node<T>* tmp = this->head;
 
-		return this->tail->data;
-	}
-
-	T& Get(int index)
-	{
-		if (index < 0)
-			throw exception("Negative index");
-
-		if (index >= this->size)
-			throw exception("Index is out of range");
-
-		if (this->head == nullptr)
-			throw exception("Nullptr");
-
-		LinkedList<T>::Data* tmp = this->head;
-
-		int i;
-		for (i = 0; i < index; i++) tmp = tmp->next;
-
+		for (std::size_t i = 0; i < index; ++i) tmp = tmp->next;
 		return tmp->data;
 	}
 
-	int GetCapacity()
-	{
-		return this->size;
-	}
+	void insert(const T& item, std::size_t index) noexcept {
+		auto tmp = new node(item);
 
-	LinkedList<T>* GetSubList(int startIndex, int endIndex)
-	{
-		if (startIndex < 0)
-			throw exception("Negative index");
-
-		if (endIndex >= this->size)
-			throw exception("Index is out of range");
-
-		if (startIndex > endIndex)
-			throw exception("Wrong index");
-
-		LinkedList<T>::Data* tmp = this->head;
-
-		for (int i = 0; i < startIndex; i++) tmp = tmp->next;
-
-		const int N = endIndex - startIndex + 1;
-		T *data = new T[N];
-		for (int i = 0; i < N; ++i)
-		{
-			data[i] = tmp->data;
-			tmp = tmp->next;
-		}
-
-		LinkedList<T>* newList = new LinkedList<T>(data, N);
-
-		return newList;
-	}
-
-	void Append(T item) //Добавляет элемент в конец списка
-	{
-		auto tmp = new LinkedList<T>::Data(item);
-
-		if (this->tail == nullptr)
-		{
-			this->tail = tmp;
-			this->head = tmp;
-			this->size = 1;
-			return;
-		}
-
-		this->tail->next = tmp;
-		this->tail = tmp;
-		this->size++;
-	}
-
-	void Prepend(T item) //Добавляет элемент в начало списка
-	{
-		auto tmp = new LinkedList<T>::Data(item);
-
-		if (this->head == nullptr)
-		{
+		if (this->head == nullptr) {
 			this->head = tmp;
 			this->tail = tmp;
 			this->size = 1;
 			return;
 		}
 
-		tmp->next = this->head;
-		this->head = tmp;
-		this->size++;
-	}
-
-	void InsertAt(int index, T item) //Вставляет элемент в заданную позицию
-	{
-		if (index < 0)
-			throw exception("Negative index");
-
-		if (index > this->size)
-			throw exception("Index is out of range");
-
-		auto tmp = new LinkedList<T>::Data(item);
-
-		if (this->head == nullptr)
-		{
-			this->head = tmp;
-			this->tail = tmp;
-			this->size = 1;
+		if (index == 0) {
+			tmp->next = this->head;
+            this->head = tmp;
+            this->size++;
 			return;
 		}
 
-		if (index == 0)
-		{
-			this->Prepend(item);
-			return;
-		}
-
-		LinkedList<T>::Data* prev = this->head;
-
-		for (int i = 0; i < index - 1; ++i) prev = prev->next;
+		node<T>* prev = this->head;
+		for (std::size_t i = 0; i < index - 1; ++i) prev = prev->next;
 
 		tmp->next = prev->next;
 		prev->next = tmp;
@@ -202,77 +104,80 @@ public:
 		if (tmp->next == nullptr) this->tail = tmp;
 	}
 
-	void Pop(int index)
-	{
-		if (index < 0)
-			throw exception("Negative index");
+	void pop(std::size_t index) {
+		node<T>* tmp = this->head;
 
-		if (index >= this->size)
-			throw exception("Index is out of range");
-
-		LinkedList<T>::Data* tmp = this->head;
-
-		if (this->size == 1)
-		{
-			delete(this->head);
+		if (this->size == 1) {
+			delete this->head;
 			this->head = nullptr;
 			this->tail = nullptr;
 			this->size = 0;
 		}
 
-		if (index == 0)
-		{
+		if (index == 0) {
 			tmp = tmp->next;
 			delete(this->head);
 			this->head = tmp;
-			this->size -= 1;
+			this->size--;
 			return;
 		}
 
-		if (index == this->size - 1)
-		{
-			for (int i = 0; i < this->size - 2; i++) tmp = tmp->next;
-			delete(this->tail);
+		if (index == this->size - 1) {
+			for (std::size_t i = 0; i < this->size - 2; ++i) tmp = tmp->next;
+			delete this->tail;
 			this->tail = tmp;
 			tmp->next = nullptr;
-			this->size -= 1;
+			this->size--;
 			return;
 		}
 
-		for (int i = 0; i < index - 1; i++) tmp = tmp->next;
+		for (std::size_t i = 0; i < index - 1; ++i) tmp = tmp->next;
 
-		LinkedList<T>::Data* del = tmp->next;
+		node<T>* del = tmp->next;
 		tmp->next = tmp->next->next;
-		delete(del);
-		this->size -= 1;
+		delete del;
+		this->size--;
 	}
 	
-	LinkedList<T>* Concat(LinkedList<T>* list) //Сцепляет два списка
-	{
-		LinkedList<T> *newList = new LinkedList<T>(this);
+	linked_list<T>* Concat(linked_list<T>* list) {
+		linked_list<T> *new_list = new linked_list<T>(this);
 
-		LinkedList<T>::Data* oldList = list->head;
-		LinkedList<T>::Data* tmp {nullptr};
-		LinkedList<T>::Data* prev = new LinkedList<T>::Data(oldList->data);
+		node<T>* old_list = list->head;
+		node<T>* tmp {nullptr};
+		node<T>* prev = new node<T>(old_list->data);
 
-		newList->tail->next = prev;
-		newList->tail = prev;
+		new_list->tail->next = prev;
+		new_list->tail = prev;
 
-		oldList = oldList->next;
+		old_list = old_list->next;
 
-		int i;
-		for (i = 1; i < list->size; i++)
-		{
-			tmp = new LinkedList<T>::Data(oldList->data);
+		for (std::size_t i = 1; i < list->size; ++i) {
+			tmp = new node<T>(old_list->data);
 			prev->next = tmp;
 
 			prev = tmp;
-			oldList = oldList->next;
+			old_list = old_list->next;
 		}
 
-		newList->tail = tmp;
-		newList->size = this->size + list->size;
+		new_list->tail = tmp;
+		new_list->size = this->size + list->size;
 
+		return new_list;
+	}
+
+	linked_list<T>* GetSubList(std::size_t startIndex, std::size_t endIndex) const noexcept {
+		node<T>* tmp = this->head;
+
+		for (std::size_t i = 0; i < startIndex; ++i) tmp = tmp->next;
+
+		const std::size_t N = endIndex - startIndex + 1;
+		T *data = new T[N];
+		for (std::size_t i = 0; i < N; ++i) {
+			data[i] = tmp->data;
+			tmp = tmp->next;
+		}
+
+		linked_list<T>* newList = new linked_list<T>(data, N);
 		return newList;
 	}
 };
