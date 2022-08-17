@@ -69,6 +69,12 @@ public:
         this->data->pop(index);
     }
 
+    T& operator[](std::size_t index) {
+        assert(index < this->data->get_size());
+
+        return this->data->get(index);
+    }
+
 private:
 	linked_list<T>* data;
 };
