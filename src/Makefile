@@ -1,12 +1,12 @@
 CC=g++
 FLAGS=-std=c++17 -Wall -Werror -Wextra -fsanitize=address
 
-all: array_sequence
+all: main
 
-array_sequence: main.o
+main: main.o
 	$(CC) $(FLAGS) -o ../build/program main.o
 
-main.o: main.cpp ArraySequence.hpp Sequence.hpp DynamicArray.hpp
+main.o: main.cpp Sequence.hpp ArraySequence.hpp DynamicArray.hpp ListSequence.hpp LinkedList.hpp
 	$(CC) $(FLAGS) -c main.cpp
 
 clean:

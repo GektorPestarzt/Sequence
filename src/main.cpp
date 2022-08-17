@@ -1,13 +1,21 @@
 #include <iostream>
 #include "ArraySequence.hpp"
+#include "ListSequence.hpp"
 
 int main() {
-    auto array = new array_sequence<int>();
+    auto array = new list_sequence<int>();
 
     // array->insert(0, 0);
-    for (std::size_t i = 0; i < 200; ++i) array->prepend(i);
+    for (std::size_t i = 0; i < 200; ++i) {
+        array->append(i);
+        // std::cout << array->get_size() << '\n';
+    }
+    // array->erase(0);
+    for (std::size_t i = 0; i < 200; ++i) {
+        array->erase(0);
+        // std::cout << array->get_size() << '\n';
+    }
 
-    for (std::size_t i = 0; i < 200; ++i) array->erase(0);
 
     for (std::size_t i = 0; i < array->get_size(); ++i) std::cout << array->get(i) << " ";
 

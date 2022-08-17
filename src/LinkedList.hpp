@@ -9,17 +9,19 @@ struct node {
 	T data;
 	node* next;
 
-		node(const T& _item, node _next = nullptr) : data(_item), next(_next) {}
+		node(const T& _item, node* _next = nullptr) : data(_item), next(_next) {}
 };
 
 template<typename T>
 class linked_list {
 private:
-	node* head;
-	node* tail;
+	node<T>* head;
+	node<T>* tail;
 	std::size_t size;
 
 public:
+    linked_list() noexcept : head(nullptr), tail(nullptr), size(0) {}
+
 	linked_list(const T* const items, std::size_t _size) noexcept : size(_size) {
 		node<T>* tmp {nullptr};
 		node<T>* prev = new node<T>(items[0]);
@@ -54,21 +56,19 @@ public:
 		this->tail = tmp;
 	}
 
-	~LinkedList() {
-		auto tmp = this->head;
-		auto next_one = tmp->next;
+	~linked_list() {
+		node<T>* tmp = this->head;
 
-		for (std::size_t i = 0; i < size; ++i) {
+		while (tmp != nullptr) {
 			delete tmp;
-			tmp = next_one;
-			next_one = next_one->next;
+			tmp = tmp->next;
 		}
 	}
 
 public:
     std::size_t get_size() const noexcept { return this->size; }
 
-    bool empty() const noexcept { return thie->head == nullptr; }
+    bool empty() const noexcept { return this->head == nullptr; }
 
 	T& get(std::size_t index) const noexcept {
 		node<T>* tmp = this->head;
@@ -78,7 +78,7 @@ public:
 	}
 
 	void insert(const T& item, std::size_t index) noexcept {
-		auto tmp = new node(item);
+		node<T>* tmp = new node<T>(item);
 
 		if (this->head == nullptr) {
 			this->head = tmp;
@@ -112,6 +112,7 @@ public:
 			this->head = nullptr;
 			this->tail = nullptr;
 			this->size = 0;
+            return;
 		}
 
 		if (index == 0) {
