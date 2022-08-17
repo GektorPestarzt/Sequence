@@ -71,7 +71,7 @@ public:
 			this->data->resize(min_capacity(capacity / 2));
 	}
 
-    void append(const T& item) noexcept override { push_back(item); }
+    void append(const T& item) noexcept override { this->push_back(item); }
 
     void prepend(const T& item) noexcept {
         std::size_t size = this->data->get_size();
