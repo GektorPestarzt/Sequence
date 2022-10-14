@@ -6,7 +6,7 @@ all: main
 main: main.o
 	$(CC) $(FLAGS) -o ../build/program main.o
 
-main.o: main.cpp Sequence.hpp ArraySequence.hpp DynamicArray.hpp ListSequence.hpp LinkedList.hpp
+main.o: main.cpp Sequence.hpp ArraySequence.hpp DynamicArray.hpp ListSequence.hpp LinkedList.hpp Sorter.hpp
 	$(CC) $(FLAGS) -c main.cpp
 
 clean:

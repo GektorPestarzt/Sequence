@@ -4,7 +4,7 @@
 #include <iostream>
 
 template <class T>
-class sequence {
+class Sequence {
 public:
 	virtual std::size_t get_size() const noexcept = 0;
     virtual bool empty() const noexcept = 0;
@@ -21,7 +21,7 @@ public:
     virtual void insert(const T&, std::size_t) = 0;
     virtual void erase(std::size_t) = 0;
 
-    virtual ~sequence() noexcept {}
+    virtual ~Sequence() noexcept {}
 };
 
 #endif  // SRC_SEQUENCE_HPP_

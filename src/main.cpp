@@ -1,9 +1,10 @@
 #include <iostream>
 #include "ArraySequence.hpp"
 #include "ListSequence.hpp"
+#include "Sorter.hpp"
 
 int main() {
-    auto array = new list_sequence<int>();
+    auto array = new ListSequence<int>();
 
     // array->insert(0, 0);
     for (std::size_t i = 0; i < 200; ++i) {

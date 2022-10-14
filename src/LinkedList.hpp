@@ -9,20 +9,20 @@ struct node {
 	T data;
 	node* next;
 
-		node(const T& _item, node* _next = nullptr) : data(_item), next(_next) {}
+	node(const T& _item, node* _next = nullptr) : data(_item), next(_next) {}
 };
 
 template<typename T>
-class linked_list {
+class LinkedList {
 private:
 	node<T>* head;
 	node<T>* tail;
 	std::size_t size;
 
 public:
-    linked_list() noexcept : head(nullptr), tail(nullptr), size(0) {}
+    LinkedList() noexcept : head(nullptr), tail(nullptr), size(0) {}
 
-	linked_list(const T* const items, std::size_t _size) noexcept : size(_size) {
+	LinkedList(const T* const items, std::size_t _size) noexcept : size(_size) {
 		node<T>* tmp {nullptr};
 		node<T>* prev = new node<T>(items[0]);
 		this->head = prev;
@@ -37,7 +37,7 @@ public:
 		this->tail = tmp;
 	}
 	
-	linked_list(linked_list<T>* list) : size(list->size) { //ERROR if size = 0; head = tail = nullptr
+	LinkedList(LinkedList<T>* list) : size(list->size) { //ERROR if size = 0; head = tail = nullptr
 		node<T>* oldList = list->head;
 		node<T>* tmp {nullptr};
 		node<T>* prev = new node<T>(oldList->data);
@@ -56,7 +56,7 @@ public:
 		this->tail = tmp;
 	}
 
-	~linked_list() {
+	~LinkedList() {
 		node<T>* tmp = this->head;
 
 		while (tmp != nullptr) {
@@ -90,7 +90,7 @@ public:
 		if (index == 0) {
 			tmp->next = this->head;
             this->head = tmp;
-            this->size++;
+            ++this->size;
 			return;
 		}
 
@@ -99,7 +99,7 @@ public:
 
 		tmp->next = prev->next;
 		prev->next = tmp;
-		this->size++;
+		++this->size;
 
 		if (tmp->next == nullptr) this->tail = tmp;
 	}
@@ -140,8 +140,8 @@ public:
 		this->size--;
 	}
 	
-	linked_list<T>* Concat(linked_list<T>* list) {
-		linked_list<T> *new_list = new linked_list<T>(this);
+	LinkedList<T>* Concat(LinkedList<T>* list) {
+		LinkedList<T> *new_list = new LinkedList<T>(this);
 
 		node<T>* old_list = list->head;
 		node<T>* tmp {nullptr};
@@ -166,7 +166,7 @@ public:
 		return new_list;
 	}
 
-	linked_list<T>* GetSubList(std::size_t startIndex, std::size_t endIndex) const noexcept {
+	LinkedList<T>* GetSubList(std::size_t startIndex, std::size_t endIndex) const noexcept {
 		node<T>* tmp = this->head;
 
 		for (std::size_t i = 0; i < startIndex; ++i) tmp = tmp->next;
@@ -178,7 +178,7 @@ public:
 			tmp = tmp->next;
 		}
 
-		linked_list<T>* newList = new linked_list<T>(data, N);
+		LinkedList<T>* newList = new LinkedList<T>(data, N);
 		return newList;
 	}
 };

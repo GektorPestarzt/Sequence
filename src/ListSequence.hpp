@@ -10,15 +10,15 @@
 using namespace std;
 
 template <typename T>
-class list_sequence : public sequence<T> {
+class ListSequence : public Sequence<T> {
 public:
-	list_sequence() : data(new linked_list<T>()) {}
+	ListSequence() : data(new LinkedList<T>()) {}
 
-	list_sequence(T* items, std::size_t size) : data(new linked_list<T>(items, size)) {}
+	ListSequence(T* items, std::size_t size) : data(new LinkedList<T>(items, size)) {}
 	
-    list_sequence(list_sequence<T>* list) : data(new linked_list<T>(list->data)) {}
+    ListSequence(ListSequence<T>* list) : data(new LinkedList<T>(list->data)) {}
 
-    ~list_sequence() { delete data; }
+    ~ListSequence() { delete data; }
 
 public:
 	std::size_t get_size() const noexcept override { return this->data->get_size(); }
@@ -76,7 +76,7 @@ public:
     }
 
 private:
-	linked_list<T>* data;
+	LinkedList<T>* data;
 };
 
 #endif  // SRC_LISTSEQUENCE_HPP_

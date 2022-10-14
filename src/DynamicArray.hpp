@@ -4,18 +4,18 @@
 #include <iostream>
 
 template <class T>
-class dynamic_array {
+class DynamicArray {
 public:
-	dynamic_array() noexcept : array(new T[10]), size(0), capacity(10) {}
+	DynamicArray() noexcept : array(new T[10]), size(0), capacity(10) {}
 	
-    dynamic_array(std::size_t size) noexcept : size(size), array(new T[size]) {}
+    DynamicArray(std::size_t size) noexcept : size(size), array(new T[size]) {}
 	
-    dynamic_array(T* items, std::size_t _size, std::size_t _capacity) noexcept
+    DynamicArray(T* items, std::size_t _size, std::size_t _capacity) noexcept
         : array(new T[_capacity]), size(_size), capacity(_capacity) {
         std::copy(items, items + _size, array);
     }
 	
-    ~dynamic_array() noexcept { delete[] array; }
+    ~DynamicArray() noexcept { delete[] array; }
 
 public:
 	inline T& get(std::size_t index) const noexcept { return this->array[index]; }

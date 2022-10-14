@@ -10,20 +10,20 @@
 #define MIN_CAPACITY 10
 
 template <class T>
-class array_sequence: public sequence<T> {
+class ArraySequence: public Sequence<T> {
 private:
     std::size_t min_capacity(const std::size_t& capacity) {
         return capacity < MIN_CAPACITY ? MIN_CAPACITY : capacity;
     }
 
 public:
-	array_sequence() noexcept
-        : data(new dynamic_array<T>()) {}
+	ArraySequence() noexcept
+        : data(new DynamicArray<T>()) {}
 
-	array_sequence(T* items, std::size_t size) noexcept
-        : data(new dynamic_array<T>(items, size, min_capacity(size * 2))) {}
+	ArraySequence(T* items, std::size_t size) noexcept
+        : data(new DynamicArray<T>(items, size, min_capacity(size * 2))) {}
 
-    ~array_sequence() noexcept { delete data; }
+    ~ArraySequence() noexcept { delete data; }
 
 public:
 	std::size_t get_size() const noexcept override { return this->data->get_size(); }
@@ -132,7 +132,7 @@ public:
 	}
 
 private:
-	dynamic_array<T>* data;
+	DynamicArray<T>* data;
 };
 
 #endif  // SRC_ARRAYSEQUENCE_HPP_
