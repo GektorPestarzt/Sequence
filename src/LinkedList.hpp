@@ -57,11 +57,13 @@ public:
 	}
 
 	~LinkedList() {
-		node<T>* tmp = this->head;
+		node<T>* current = this->head;
+        node<T>* tmp;
 
-		while (tmp != nullptr) {
-			delete tmp;
-			tmp = tmp->next;
+		while (current != nullptr) {
+            tmp = current->next;
+			delete current;
+			current = tmp;
 		}
 	}
 
@@ -69,6 +71,18 @@ public:
     std::size_t get_size() const noexcept { return this->size; }
 
     bool empty() const noexcept { return this->head == nullptr; }
+
+    node<T>* get_head() const noexcept { return this->head; }
+
+    void set_head(node<T> *head) {
+        this->head = head;
+
+        node<T> *tmp = head;
+        while (tmp->next) {
+            tmp = tmp->next;
+        }
+        this->tail = tmp;
+    }
 
 	T& get(std::size_t index) const noexcept {
 		node<T>* tmp = this->head;

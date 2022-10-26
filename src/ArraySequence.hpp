@@ -2,7 +2,6 @@
 #define SRC_ARRAYSEQUENCE_HPP_
 
 #include <iostream>
-#include <assert.h>
 
 #include "DynamicArray.hpp"
 #include "Sequence.hpp"
@@ -30,23 +29,11 @@ public:
 
     bool empty() const noexcept override { return this->data->get_size() == 0; }
 
-    T& get(std::size_t index) const override {
-        assert(index < this->data->get_size());
+    T& get(std::size_t index) const noexcept override { return this->data->get(index); }
 
-		return this->data->get(index);
-	}
+    T get_last() const noexcept override { return this->data->get(this->data->get_size() - 1); }
 
-    T get_last() const override {
-        assert(!this->empty());
-
-        return this->data->get(this->data->get_size() - 1);
-    }
-
-    T get_first() const override {
-        assert(!this->empty());
-
-        return this->data->get(0);
-    }
+    T get_first() const noexcept override { return this->data->get(0); }
 
 	void push_back(const T& item) noexcept override {
         std::size_t size = this->data->get_size();
@@ -59,9 +46,7 @@ public:
 		this->data->set_size(size + 1);
 	}
 
-	void pop_back() override {
-        assert(!this->empty());
-
+	void pop_back() noexcept override {
         std::size_t size = this->data->get_size();
         std::size_t capacity = this->data->get_capacity();
 
@@ -90,11 +75,9 @@ public:
         this->data->set_size(++size);
     }
 
-	void insert(const T& item, std::size_t index) override {
+	void insert(const T& item, std::size_t index) noexcept override {
         std::size_t size = this->data->get_size();
         std::size_t capacity = this->data->get_capacity();
-
-        assert(index <= size);
 
         if (size == capacity)
             this->data->resize(capacity * 2);
@@ -110,11 +93,9 @@ public:
         this->data->set_size(++size);
 	}
 
-    void erase(std::size_t index) override {
+    void erase(std::size_t index) noexcept override {
         std::size_t size = this->data->get_size();
         std::size_t capacity = this->data->get_capacity();
-
-        assert(index < size);
 
         for (std::size_t i = index + 1; i <= size; ++i)
             this->data->set(this->data->get(i), i - 1);
@@ -125,11 +106,13 @@ public:
 			this->data->resize(min_capacity(capacity / 2));
 	}
 
-	T& operator[](std::size_t index) {
-        assert(index < this->data->get_size());
+    void swap(std::size_t first, std::size_t second) noexcept {
+        T buffer = this->data->get(first);
+        this->data->set(this->data->get(second), first);
+        this->data->set(buffer, second);
+    }
 
-		return this->data->get(index);
-	}
+	T& operator[](std::size_t index) { return this->data->get(index); }
 
 private:
 	DynamicArray<T>* data;

@@ -25,6 +25,10 @@ public:
 
     bool empty() const noexcept override { return this->data->empty(); }
 
+    void set_head(node<T> *head) noexcept { this->data->set_head(head); }
+
+    node<T>* get_head() const noexcept { return this->data->get_head(); }
+
 	T& get(std::size_t index) const override {
 		assert(index < this->data->get_size());
 
