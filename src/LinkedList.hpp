@@ -73,6 +73,7 @@ public:
     bool empty() const noexcept { return this->head == nullptr; }
 
     node<T>* get_head() const noexcept { return this->head; }
+    node<T>* get_tail() const noexcept { return this->tail; }
 
     void set_head(node<T> *head) {
         this->head = head;

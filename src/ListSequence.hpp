@@ -21,6 +21,32 @@ public:
     ~ListSequence() { delete data; }
 
 public:
+    class iterator {
+        node<T>* it;
+
+        public:
+            iterator(node<T>* it) : it(it) {}
+
+            T& operator*() { return this->it->data; }
+
+            bool operator==(const iterator &it_compare) noexcept {
+                return this->it == it_compare.it;
+            }
+
+            bool operator!=(const iterator &it_compare) noexcept {
+                return this->it != it_compare.it;
+            }
+
+            iterator operator++() noexcept {
+                this->it = this->it->next;
+                return *this;
+            }
+    };
+
+    iterator begin() noexcept { return iterator(this->data->get_head()); }
+    iterator end() noexcept { return iterator(this->data->get_tail()->next); }
+
+
 	std::size_t get_size() const noexcept override { return this->data->get_size(); }
 
     bool empty() const noexcept override { return this->data->empty(); }
