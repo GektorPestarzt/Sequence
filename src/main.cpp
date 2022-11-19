@@ -75,13 +75,13 @@ int main() {
     // test_clocking();
     // array_sort();
 
-    auto array = new ListSequence<int>();
+    auto array = new ArraySequence<int>();
 
     for (std::size_t i = 0; i < 100; ++i) {
         array->append(i + 1);
     }
 
-    for (ListSequence<int>::iterator it = array->begin(); it != array->end(); ++it) {
+    for (ArraySequence<int>::iterator it = array->begin(); it != array->end(); ++it) {
         std::cout << (*it) << ' ';
     }
 

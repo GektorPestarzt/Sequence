@@ -25,6 +25,11 @@ public:
     ~ArraySequence() noexcept { delete data; }
 
 public:
+    using iterator = T*;
+
+    iterator begin() noexcept { return this->data->get_ptr(0); }
+    iterator end() noexcept { return this->data->get_ptr(this->data->get_size()); }
+
 	std::size_t get_size() const noexcept override { return this->data->get_size(); }
 
     bool empty() const noexcept override { return this->data->get_size() == 0; }
@@ -39,7 +44,7 @@ public:
         std::size_t size = this->data->get_size();
         std::size_t capacity = this->data->get_capacity();
 
-		if (size == capacity)
+		if (size + 1 == capacity)
             this->data->resize(capacity * 2);
 
 		this->data->set(item, size);
@@ -62,7 +67,7 @@ public:
         std::size_t size = this->data->get_size();
         std::size_t capacity = this->data->get_capacity();
 
-        if (size == capacity)
+        if (size + 1 == capacity)
             this->data->resize(capacity * 2);
 
         if (size != 0) {
@@ -79,7 +84,7 @@ public:
         std::size_t size = this->data->get_size();
         std::size_t capacity = this->data->get_capacity();
 
-        if (size == capacity)
+        if (size + 1 == capacity)
             this->data->resize(capacity * 2);
 
         if (size != 0) {

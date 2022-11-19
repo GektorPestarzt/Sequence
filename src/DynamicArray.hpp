@@ -19,6 +19,7 @@ public:
 
 public:
 	inline T& get(std::size_t index) const noexcept { return this->array[index]; }
+    inline T* get_ptr(std::size_t index) const noexcept { return this->array + index; }
 
 	inline std::size_t get_size() const noexcept { return this->size; }
 
