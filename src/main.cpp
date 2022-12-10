@@ -53,9 +53,9 @@ int test_clocking() {
     
     double time = clock.sort_clocking_random_set(1000000, Sorter<int>::qsort, int_cmpf);
     std::cout << time << std::endl;
-    time = clock.sort_clocking_random_set(100000, Sorter<int>::bubble_sort, int_cmpf);
+    time = clock.sort_clocking_random_set(10000, Sorter<int>::bubble_sort, int_cmpf);
     std::cout << time << std::endl;
-    time = clock.sort_clocking_random_set(100000, Sorter<int>::merge_sort, int_cmpf);
+    time = clock.sort_clocking_random_set(1000000, Sorter<int>::merge_sort, int_cmpf);
     std::cout << time << std::endl;
 /*
     time = clock.sort_clocking(array, Sorter<int>::merge_sort, int_cmpf);
