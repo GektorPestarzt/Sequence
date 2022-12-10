@@ -8,7 +8,7 @@
 
 #define ELEMENTS_MAX 10000
 #define ELEMENTS_MIN 10
-#define POINTS 5
+#define POINTS 10
 
 bool int_cmpf(int a, int b) { return a > b; }
 
@@ -109,38 +109,38 @@ void file_clocking(std::size_t min_elements, std::size_t max_elements, std::size
     std::cout << "[      ]" << std::endl;
 
     out << "ARRAY-QSORT\n";
-    for (std::size_t t = 0; t <= points; ++t) {
-        std::size_t number = min_elements + (max_elements - min_elements) * t / points;
+    for (std::size_t t = 0; t < points; ++t) {
+        std::size_t number = min_elements + (max_elements - min_elements) * t / (points - 1);
         out << number << " ";
         double time = clock.sort_clocking_random_set(number, Sorter<int>::qsort, int_cmpf);
-        out << (int)(time * 100) << "\n";
+        out << (int)(time * 10000) << "\n";
     }
     std::cout << "[-     ]" << std::endl;
 
     out << "ARRAY-MERGE_SORT\n";
-    for (std::size_t t = 0; t <= points; ++t) {
-        std::size_t number = min_elements + (max_elements - min_elements) * t / points;
+    for (std::size_t t = 0; t < points; ++t) {
+        std::size_t number = min_elements + (max_elements - min_elements) * t / (points - 1);
         out << number << " ";
         double time = clock.sort_clocking_random_set(number, Sorter<int>::merge_sort, int_cmpf);
-        out << (int)(time * 100) << "\n";
+        out << (int)(time * 10000) << "\n";
     }
     std::cout << "[--    ]" << std::endl;
 
     out << "ARRAY-BUBBLE_SORT\n";
-    for (std::size_t t = 0; t <= points; ++t) {
-        std::size_t number = min_elements + (max_elements - min_elements) * t / points;
+    for (std::size_t t = 0; t < points; ++t) {
+        std::size_t number = min_elements + (max_elements - min_elements) * t / (points - 1);
         out << number << " ";
         double time = clock.sort_clocking_random_set(number, Sorter<int>::bubble_sort, int_cmpf);
-        out << (int)(time * 100) << "\n";
+        out << (int)(time * 10000) << "\n";
     }
     std::cout << "[---   ]" << std::endl;
 
-    out << "ARRAY-BUBBLE_SORT\n";
-    for (std::size_t t = 0; t <= points; ++t) {
-        std::size_t number = min_elements + (max_elements - min_elements) * t / points;
+    out << "ARRAY-SHAKER_SORT\n";
+    for (std::size_t t = 0; t < points; ++t) {
+        std::size_t number = min_elements + (max_elements - min_elements) * t / (points - 1);
         out << number << " ";
         double time = clock.sort_clocking_random_set(number, Sorter<int>::shaker_sort, int_cmpf);
-        out << (int)(time * 100) << "\n";
+        out << (int)(time * 10000) << "\n";
     }
     std::cout << "[----  ]" << std::endl;
 
@@ -154,20 +154,20 @@ void file_clocking_list(std::size_t min_elements, std::size_t max_elements, std:
     out.open("file2.txt");
 
     out << "LIST-QSORT\n";
-    for (std::size_t t = 0; t <= points; ++t) {
-        std::size_t number = min_elements + (max_elements - min_elements) * t / points;
+    for (std::size_t t = 0; t < points; ++t) {
+        std::size_t number = min_elements + (max_elements - min_elements) * t / (points - 1);
         out << number << " ";
         double time = clock.sort_clocking_random_set(number, SorterList<int>::qsort_list, int_cmpf);
-        out << (int)(time * 100) << "\n";
+        out << (int)(time * 10000) << "\n";
     }
     std::cout << "[----- ]" << std::endl;
 
-    out << "List-MERGE_SORT\n";
-    for (std::size_t t = 0; t <= points; ++t) {
-        std::size_t number = min_elements + (max_elements - min_elements) * t / points;
+    out << "LIST-MERGE_SORT\n";
+    for (std::size_t t = 0; t < points; ++t) {
+        std::size_t number = min_elements + (max_elements - min_elements) * t / (points - 1);
         out << number << " ";
         double time = clock.sort_clocking_random_set(number, SorterList<int>::merge_sort_list, int_cmpf);
-        out << (int)(time * 100) << "\n";
+        out << (int)(time * 10000) << "\n";
     }
     std::cout << "[------]" << std::endl;
 
@@ -175,7 +175,12 @@ void file_clocking_list(std::size_t min_elements, std::size_t max_elements, std:
 }
 
 int main() {
-    // test_clocking();
+    /*
+    std::ofstream out;
+    out.open("options.txt");
+    out << POINTS << "\n";
+    out.close();*/
+
     file_clocking(ELEMENTS_MIN, ELEMENTS_MAX, POINTS);
     file_clocking_list(ELEMENTS_MIN, ELEMENTS_MAX, POINTS);
 
