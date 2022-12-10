@@ -4,7 +4,7 @@ import numpy as np
 def function(n,k):
     mas=[]
     mas2=[]
-    with open("file1.txt", "r") as file:
+    with open("data/file1.txt", "r") as file:
         for i in range(k):
             pair = file.readline()
         str = file.readline()
@@ -21,7 +21,7 @@ def function(n,k):
 def function2(n,k):
     mas=[]
     mas2=[]
-    with open("file2.txt", "r") as file:
+    with open("data/file2.txt", "r") as file:
         for i in range(k):
             pair = file.readline()
         str = file.readline()
@@ -34,7 +34,10 @@ def function2(n,k):
     mas2 = np.asarray(list(map(float, mas2)))
     return mas, mas2, str
 
-n = 10
+with open("data/options.txt", "r") as file:
+    f = file.readline()
+    n = int(f)
+
 mas1, mas2, str1 = function2(n,0)
 mas3, mas4, str2 = function2(n, n+1)
 # mas5, mas6, str3 = function2(n, 2*(n+1))
