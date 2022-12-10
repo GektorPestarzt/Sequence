@@ -28,14 +28,14 @@ int list_sort() {
 int array_sort() {
     auto array = new ArraySequence<int>();
 
-    for (std::size_t i = 0; i < 10; ++i) {
-        array->append(i + 1);
+    for (std::size_t i = 0; i < 20; ++i) {
+        array->append(rand() % 100);
     }
 
     for (std::size_t i = 0; i < array->get_size(); ++i) std::cout << array->get(i) << " ";
     std::cout << std::endl;
 
-    Sorter<int>::qsort(array, int_cmpf);
+    Sorter<int>::bubble_sort(array, int_cmpf);
 
     for (std::size_t i = 0; i < array->get_size(); ++i) std::cout << array->get(i) << " ";
     std::cout << std::endl;
@@ -51,11 +51,11 @@ int test_clocking() {
         array->append(1 + rand() % 100000);
     }
     
-    double time = clock.sort_clocking_sorted_set(100000, Sorter<int>::qsort, int_cmpf);
+    double time = clock.sort_clocking_random_set(1000000, Sorter<int>::qsort, int_cmpf);
     std::cout << time << std::endl;
-    time = clock.sort_clocking_sorted_set(10000, Sorter<int>::bubble_sort, int_cmpf);
+    time = clock.sort_clocking_random_set(100000, Sorter<int>::bubble_sort, int_cmpf);
     std::cout << time << std::endl;
-    time = clock.sort_clocking_sorted_set(10000, Sorter<int>::shaker_sort, int_cmpf);
+    time = clock.sort_clocking_random_set(100000, Sorter<int>::merge_sort, int_cmpf);
     std::cout << time << std::endl;
 /*
     time = clock.sort_clocking(array, Sorter<int>::merge_sort, int_cmpf);
@@ -72,9 +72,10 @@ int test_clocking() {
 
 
 int main() {
-    // test_clocking();
+    test_clocking();
     // array_sort();
-
+    // list_sort();
+/*
     auto array = new ArraySequence<int>();
 
     for (std::size_t i = 0; i < 100; ++i) {
@@ -84,6 +85,6 @@ int main() {
     for (ArraySequence<int>::iterator it = array->begin(); it != array->end(); ++it) {
         std::cout << (*it) << ' ';
     }
-
+*/
     return 0;
 }

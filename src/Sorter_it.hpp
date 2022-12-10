@@ -5,54 +5,57 @@
 
 template <typename T>
 class SorterList {
-
 public:
+    using namespace ListSequence<T>;
+
     static void merge_sort_list(ListSequence<T>* list, bool (*cmpf)(T, T)) {
-        list->set_head(merge_sort_list_recursive(list->get_head(), cmpf));
+        list->set_head(merge_sort_list_recursive(list->begin(), cmpf));
     }
 
     static void qsort_list(ListSequence<T>* list, bool (*cmpf)(T, T)) {
-        list->set_head(qsort_list_recursive(list->get_head(), cmpf));
+        list->set_head(qsort_list_recursive(list->begin(), cmpf));
     }
 
 private:
-    static node<T>* merge_sort_list_recursive(node<T>* head, bool (*cmpf)(T, T)) { 
-        if (!head || !head->next) {
-            return head;
+// ----------------------------------- MERGE SORT LIST -----------------------------------
+
+    static node<T>* merge_sort_list_recursive(iterator it, bool (*cmpf)(T, T)) { 
+        if (!(*it) || !(*it)->next) {
+            return *it;
         }
 
-        node<T> *first, *second;
-        merge_sort_list_split(head, &first, &second);
+        iterator first, second;
+        merge_sort_list_split(it, &first, &second);
 
         first = merge_sort_list_recursive(first, cmpf);
         second = merge_sort_list_recursive(second, cmpf);
 
         node<T> *result = merge_sort_list_merge(first, second, cmpf);
-        
         return result;
     }
 
-     static void merge_sort_list_split(node<T>* head, node<T>** first, node<T>** second) {
-        node<T> *slow = head, *fast = head->next;
-        while (fast && fast->next) {
-            slow = slow->next;
-            fast = fast->next->next;
+    static void merge_sort_list_split(iterator head, iterator* first, iterator* second) {
+        iterator it = head;
+        iterator slow = it, fast = ++it;
+        while (*fast && (*fast)->next) {
+            ++slow;
+            ++(++fast);
         }
 
-        *first = head;
-        *second = slow->next;
-        slow->next = nullptr;
+        first = head;
+        second = ++slow;
+        (*slow)->next = nullptr;
     }
 
-    static node<T>* merge_sort_list_merge(node<T>* first, node<T>* second, bool (*cmpf)(T, T)) {
+    static node<T>* merge_sort_list_merge(iterator first, iterator second, bool (*cmpf)(T, T)) {
         node<T>* result = nullptr;
 
-        if (first && (!second || !cmpf(first->data, second->data))) {
-            result = first;
-            result->next = merge_sort_list_merge(first->next, second, cmpf);
-        } else if (second && (!first || cmpf(first->data, second->data))) {
-            result = second;
-            result->next = merge_sort_list_merge(first, second->next, cmpf);
+        if (*first && (!*second || !cmpf((*first)->data, (*second)->data))) {
+            result = *first;
+            result->next = merge_sort_list_merge(++first, second, cmpf);
+        } else if (*second && (!*first || cmpf((*first)->data, (*second)->data))) {
+            result = *second;
+            result->next = merge_sort_list_merge(first, ++second, cmpf);
         }
 
         return result;
@@ -60,29 +63,29 @@ private:
 
 // ----------------------------------- QUICK SORT LIST -----------------------------------
 
-    static node<T>* qsort_list_recursive(node<T>* head, bool (*cmpf)(T, T)) {
-        if (!head || !head->next) {
-            return head;
+    static node<T>* qsort_list_recursive(iterator head, bool (*cmpf)(T, T)) {
+        if (!*head || !(*head)->next) {
+            return *head;
         }
 
-        node<T> *current = head;
-        while (current->next) { current = current->next; }
+        iterator current = head;
+        while ((*current)->next) { ++current; }
 
         head = qsort_list_split(head, current, cmpf);
 
-        node<T>* tmp;
+        iterator tmp;
 
-        current->next = qsort_list_recursive(current->next, cmpf);
+        (*current)->next = qsort_list_recursive(current->next, cmpf);
         if (head != current) {
             tmp = head;
-            while (tmp->next != current) { tmp = tmp->next; }
-            tmp->next = nullptr;
+            while ((*tmp)->next != *current) { ++tmp; }
+            (*tmp)->next = nullptr;
 
             head = qsort_list_recursive(head, cmpf);
    
             tmp = head;
-            while (tmp->next) { tmp = tmp->next; }
-            tmp->next = current;
+            while ((*tmp)->next) { ++tmp; }
+            (*tmp)->next = *current;
         } else {
             head = current;
         }
@@ -90,26 +93,27 @@ private:
         return head;
     }
 
-    static node<T>* qsort_list_split(node<T>* head, node<T>* current, bool (*cmpf)(T, T)) {
-        node<T>* tmp = head;
-        node<T>* new_head = head;
-        node<T>* prev = nullptr;
-        node<T>* last = current;
+    static node<T>* qsort_list_split(iterator head, iterator current, bool (*cmpf)(T, T)) {
+        iterator tmp = head;
+        node<T>* new_head = *head;
+        iterator prev = nullptr;
+        iterator last = current;
 
         while (tmp != current) {
-            if (cmpf(tmp->data, current->data)) {
-                if (!prev) {
-                    new_head = tmp->next;
+            if (cmpf((*tmp)->data, (*current)->data)) {
+                if (!*prev) {
+                    new_head = *tmp;
+                    ++new_head;
                 } else {
-                    prev->next = tmp->next;
+                    (*prev)->next = (*tmp)->next;
                 }
-                last->next = tmp;
+                (*last)->next = *tmp;
                 last = tmp;
-                tmp = tmp->next;
-                last->next = nullptr;
+                ++tmp;
+                (*last)->next = nullptr;
             } else {
                 prev = tmp;
-                tmp = tmp->next;
+                ++tmp;
             }
         }
 
@@ -120,12 +124,14 @@ private:
 template<typename T>
 class Sorter {
 public:
+    using namespace ArraySequence<T>;
+
     static void merge_sort(ArraySequence<T>* array, bool (*cmpf)(T, T)) {
         merge_sort_recursive(array, 0, array->get_size() - 1, cmpf);
     }
 
     static void qsort(ArraySequence<T>* array, bool (*cmpf)(T, T)) {
-        qsort_recursive(array, 0, array->get_size() - 1, cmpf);
+        qsort_recursive(array->begin(), array->end() - 1, cmpf);
     }
 
     static void bubble_sort(ArraySequence<T>* array, bool (*cmpf)(T, T)) {
@@ -140,11 +146,10 @@ private:
 
 // ----------------------------------- MERGE SORT -----------------------------------
 
-	static void merge_sort_recursive(ArraySequence<T>* array, std::size_t left, std::size_t right, bool (*cmpf)(T, T))
-	{
+	static void merge_sort_recursive(iterator left, iterator right, bool (*cmpf)(T, T)) {
 		if (left < right)
 		{
-			std::size_t mid = (right + left) / 2;
+			iterator mid = (right + left) / 2;
 			merge_sort_recursive(array, left, mid, cmpf);
 			merge_sort_recursive(array, mid + 1, right, cmpf);
 			merge_sort_fusion(array, left, right, cmpf);
@@ -180,21 +185,21 @@ private:
 
 // ----------------------------------- QSORT SORT -----------------------------------
 
-    static void qsort_recursive(ArraySequence<T>* array, std::size_t left, std::size_t right, bool (*cmpf)(T, T)) {
+    static void qsort_recursive(iterator left, iterator right, bool (*cmpf)(T, T)) {
         if (left < right) {
-            std::size_t current = qsort_split(array, left, right, cmpf);
+            iterator current = qsort_split(left, right, cmpf);
 
-            if (current > left) qsort_recursive(array, left, current - 1, cmpf);
-            if (current < right) qsort_recursive(array, current + 1, right, cmpf);
+            if (current > left) qsort_recursive(left, current - 1, cmpf);
+            if (current < right) qsort_recursive(current + 1, right, cmpf);
         }
     }
 
-    static std::size_t qsort_split(ArraySequence<T> *array, std::size_t left, std::size_t right, bool (*cmpf)(T, T)) {
-        std::size_t pivot = right;
-        std::size_t i = left;
+    static iterator qsort_split(iterator left, iterator right, bool (*cmpf)(T, T)) {
+        iterator pivot = right;
+        iterator i = left;
 
-        for (std::size_t j = left; j < right; ++j) {
-            if (!cmpf(array->get(j), array->get(pivot))) {
+        for (iterator j = left; j < right; ++j) {
+            if (!cmpf(*j, *pivot)) {
                 array->swap(i++, j);
             }
         }
@@ -210,8 +215,8 @@ private:
         std::size_t size = array->get_size();
         if (size < 2) return;
 
-        for (std::size_t i = size - 1; i > 0; --i) {
-            for (std::size_t j = i; j < size && cmpf(array->get(j - 1), array->get(j)); ++j) {
+        for (iterator i = array->end() - 1; i != array->begin(); --i) {
+            for (iterator j = i; j != array->end() && cmpf(*(j - 1), *j); ++j) {
                 array->swap(j - 1, j);
             }
         }
@@ -220,14 +225,12 @@ private:
 // ----------------------------------- SHAKER SORT -----------------------------------
 
    static void shaker_sort_primary(ArraySequence<T>* array, bool (*cmpf)(T, T)) {
-        std::size_t size = array->get_size();
-
-        for (std::size_t i = 0; i < size; ++i) {
-            for (std::size_t l = i; l < size - 1; ++l) {
-                if (cmpf(array->get(l), array->get(l + 1))) array->swap(l, l + 1);
+        for (iterator i = array->begin(); i != array->end(); ++i) {
+            for (iterator l = i; l != array->end() - 1; ++l) {
+                if (cmpf(*l, *(l + 1))) array->swap(l, l + 1);
             }
-            for (std::size_t t = size - 1; t > i; --t) {
-                if (cmpf(array->get(t - 1), array->get(t))) array->swap(t - 1, t);
+            for (iterator t = array->end() - 1; t > i; --t) {
+                if (cmpf(*(t - 1), *t)) array->swap(t - 1, t);
             }
         }
    }

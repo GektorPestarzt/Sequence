@@ -22,6 +22,7 @@ public:
 
     static double sort_clocking_random_set(std::size_t size, void sort(Contain*, bool(*)(T, T)), bool (*cmpf)(T, T)) {
         Contain *array = new Contain();
+        srand(time(NULL));
 
         for (std::size_t i = 0; i < size; ++i) {
             array->append(1 + rand() % size);
@@ -52,8 +53,6 @@ public:
         double duration = sort_clocking(array, sort, cmpf);
         return duration;
     }
-
-   // static vector<vector<double>>
 };
 
 #endif  // SRC_CLOCKING_HPP_

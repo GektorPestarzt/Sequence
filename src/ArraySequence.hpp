@@ -111,6 +111,12 @@ public:
 			this->data->resize(min_capacity(capacity / 2));
 	}
 
+    void swap(iterator first, iterator second) noexcept {
+        T buffer = (*first)->data;
+        (*first)->data = (*second)->data;
+        (*second)->data = buffer;
+    }
+
     void swap(std::size_t first, std::size_t second) noexcept {
         T buffer = this->data->get(first);
         this->data->set(this->data->get(second), first);
