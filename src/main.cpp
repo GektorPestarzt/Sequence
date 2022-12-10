@@ -70,6 +70,30 @@ int test_clocking() {
     return 0;
 }
 
+int test_clocking_list() {
+    auto array = new ListSequence<int>();
+    IClocking<ListSequence<int>, int> clock;
+
+    for (std::size_t i = 0; i < 100000; ++i) {
+        array->append(1 + rand() % 100000);
+    }
+    
+    double time = clock.sort_clocking_random_set(100000, SorterList<int>::qsort_list, int_cmpf);
+    std::cout << time << std::endl;
+    time = clock.sort_clocking_random_set(100000, SorterList<int>::merge_sort_list, int_cmpf);
+    std::cout << time << std::endl;
+/*
+    time = clock.sort_clocking(array, Sorter<int>::merge_sort, int_cmpf);
+    std::cout << time.count() << std::endl;
+
+    time = clock.sort_clocking(array, Sorter<int>::bubble_sort, int_cmpf);
+    std::cout << time.count() << std::endl;
+    
+    time = clock.sort_clocking(array, Sorter<int>::shaker_sort, int_cmpf);
+    std::cout << time.count() << std::endl;
+*/
+    return 0;
+}
 
 int main() {
     test_clocking();
