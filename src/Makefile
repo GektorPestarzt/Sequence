@@ -7,8 +7,8 @@ all: main
 main: main.o
 	$(CC) $(FLAGS) -o ../build/program main.o
 
-main.o: main.cpp Sequence.hpp ArraySequence.hpp DynamicArray.hpp ListSequence.hpp LinkedList.hpp Sorter_it.hpp IClocking.hpp
-	$(CC) $(FLAGS) -c main.cpp
+main.o: main.cpp
+	$(CC) $(FLAGS) -c main.cpp -std=c++11
 
 clean:
 	rm -rf *.o *.gch ../build/program

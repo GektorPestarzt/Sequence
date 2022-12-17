@@ -29,6 +29,7 @@ public:
         }
 
         double duration = sort_clocking(array, sort, cmpf);
+        delete array;
         return duration;
     }
 
@@ -40,6 +41,7 @@ public:
         }
 
         double duration = sort_clocking(array, sort, cmpf);
+        delete array;
         return duration;
     }
 
@@ -51,6 +53,7 @@ public:
         }
 
         double duration = sort_clocking(array, sort, cmpf);
+        delete array;
         return duration;
     }
 };

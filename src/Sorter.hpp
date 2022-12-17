@@ -153,7 +153,7 @@ private:
 
     static void merge_sort_fusion(ArraySequence<T>* array, std::size_t left, std::size_t right, bool (*cmpf)(T, T))
 	{
-		T* buff_array = new T[right - left + 1];
+		T buff_array[right - left + 1];
 		std::size_t mid = (right + left) / 2;
 		std::size_t p1 = left;
 		std::size_t p2 = mid + 1;

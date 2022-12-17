@@ -8,9 +8,9 @@
 
 #include "progressbar.hpp"
 
-#define ELEMENTS_MAX 50000
+#define ELEMENTS_MAX 10000
 #define ELEMENTS_MIN 10
-#define POINTS 7
+#define POINTS 15
 
 bool int_cmpf(int a, int b) { return a > b; }
 
@@ -37,17 +37,18 @@ int array_sort() {
     auto array = new ArraySequence<int>();
 
     for (std::size_t i = 0; i < 20; ++i) {
-        array->append(rand() % 100);
+        array->push_back(rand() % 100);
     }
 
     for (std::size_t i = 0; i < array->get_size(); ++i) std::cout << array->get(i) << " ";
     std::cout << std::endl;
 
-    Sorter<int>::bubble_sort(array, int_cmpf);
+    Sorter<int>::merge_sort(array, int_cmpf);
 
     for (std::size_t i = 0; i < array->get_size(); ++i) std::cout << array->get(i) << " ";
     std::cout << std::endl;
 
+    delete array;
     return 0;
 }
 
@@ -152,18 +153,6 @@ int main() {
 
     std::cout << std::endl;
     system("python3 main.py");
-    // array_sort();
-    // list_sort();
-/*
-    auto array = new ArraySequence<int>();
 
-    for (std::size_t i = 0; i < 100; ++i) {
-        array->append(i + 1);
-    }
-
-    for (ArraySequence<int>::iterator it = array->begin(); it != array->end(); ++it) {
-        std::cout << (*it) << ' ';
-    }
-*/
     return 0;
 }
